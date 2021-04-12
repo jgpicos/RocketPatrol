@@ -12,17 +12,6 @@ class Play extends Phaser.Scene {
     create() {
 
         this.starfield = this.add.tileSprite(
-            0,0, 640, 480, 'starfield'
-            ). setOrigin(0, 0)
-
-        this.p1Rocket = new Rocket(
-            this,
-            game.config.width/2,
-            game.config.width.height - borderUISize - borderPadding,
-            'rocket'
-        )
-
-        this.starfield = this.add.tiSprite(
             0,0,640,480, 'starfield'
         ).setOrigin(0,0);
 
@@ -54,26 +43,25 @@ class Play extends Phaser.Scene {
             'spaceship'
         );
 
-        //green UI background
+        // green UI background
         this.add.rectangle(
-            0, 
-            borderUISize + borderPadding, 
-            game.config.width, 
+            0,
+            borderUISize + borderPadding,
+            game.config.width,
             borderUISize * 2,
             0x00FF00,
             ).setOrigin(0,0);
 
-            //white borders in slides
+            // white borders
             this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
             this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
             this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
             this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
 
-        //key assignment
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT); 
+        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);      
     }
 
     update() {
@@ -83,5 +71,18 @@ class Play extends Phaser.Scene {
         this.ship1.update();
         this.ship2.update();
         this.ship3.update();
+
+        this.checkCollision(this.p1Rocket, this.ship1);
+        this.checkCollision(this.p1Rocket, this.ship2);
+        this.checkCollision(this.p1Rocket, this.ship3);
+    }
+
+    checkCollision(rocket, ship) {
+        if( rocket.x + rocket.width > ship.x &&
+            rocket.x < ship.x + ship.width &&
+            rocket.y + rocket.height > ship.y &&
+            rocket.y < ship.y + ship.height) {
+                console.log("crash!");
+        }
     }
 }
